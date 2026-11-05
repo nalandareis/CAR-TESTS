@@ -1,0 +1,76 @@
+Este é o relatorio dos testes:
+
+Foram encontrados 14 erros e 12 oportunidades de melhoria na tela de cadastro de modelos do ProvaCar (CRUD de veículos baseado na tabela Molicar), analisada em 05/11/2026.
+• Sistema: ProvaCar – tela "Filtrar Modelos" (listagem, filtros, cadastro, edição e exclusão)
+• Navegador: Google Chrome, desktop
+• Severidade: Alta = compromete dados ou a regra de negócio; Média = informação incorreta ou incompleta para o usuário; Baixa = problema visual ou de texto
+
+Erros encontrados
+E01 – Ano início e Ano fim invertidos na grade (Alta)
+Como simular: localizar o Chevrolet Astra (Molicar 01708737-5). A grade mostra Ano início 2009 e Ano fim 2004. Ao clicar no lápis, o formulário mostra 2004 e 2009. O mesmo acontece com Audi 100, BMW 120IA, Agrale Marrua e Acura NSX.
+Esperado: a grade deve mostrar os mesmos anos do formulário, com o ano de início menor ou igual ao de fim.
+
+E02 – Registros sem Molicar (Alta)
+Como simular: filtrar por Fabricante BRM e observar a coluna Molicar das linhas BRM BUGGY 1.6, que está vazia.
+Esperado: o Molicar é obrigatório no formulário, então nenhum registro deveria existir sem ele. A validação precisa valer também no servidor.
+
+E03 – Exclusão sem confirmação (Alta)
+Como simular: clicar na lixeira de qualquer registro. Ele some na hora, sem pedido de confirmação, sem mensagem e sem como desfazer.
+Esperado: perguntar se o usuário deseja mesmo excluir e mostrar mensagem de sucesso depois.
+
+E04 – Campos da grade ausentes no formulário (Alta)
+Como simular: clicar em "Novo modelo" ou no lápis e procurar os campos Tipo, Ativo, Aut. e Cadastro Manual. Eles aparecem na grade e nos filtros, mas não no formulário.
+Esperado: poder informar e alterar esses dados no cadastro e na edição.
+
+E05 – Cilindradas e Cavalos com valor zero (Média)
+Como simular: filtrar por Fabricante BRM ou BUGGY e observar as colunas Cilind. e Cavalos, que estão com 0.
+Esperado: esses campos são obrigatórios e não deveriam aceitar zero.
+
+E06 – Registros duplicados (Média)
+Como simular: filtrar por Fabricante BRM e comparar as duas linhas BRM BUGGY 1.6. São iguais, só muda a coluna Aut.
+Esperado: o sistema deveria impedir o cadastro duplicado.
+
+E07 – Auditoria com dados fixos (Média)
+Como simular: clicar no lápis de qualquer registro e olhar o rodapé. Inclusão e Alteração mostram sempre "ADM - 01/01/2020 12:30:45".
+Esperado: mostrar o usuário e a data e hora reais de cada ação.
+
+E08 – Acentuação quebrada no combustível (Média)
+Como simular: observar a coluna Combustível do Astra, do Chamonix ou da BMW. Aparece "ÝLCOOL/GASOLINA".
+Esperado: "ÁLCOOL/GASOLINA".
+
+E09 – Edição com título "Novo modelo" (Baixa)
+Como simular: clicar no lápis de qualquer registro. O modal abre com o título "Novo modelo".
+Esperado: título "Editar modelo".
+
+E10 – Família antes de Fabricante no formulário (Baixa)
+Como simular: clicar em "Novo modelo" e abrir o campo Família. Ele só mostra "Selecione..." até o fabricante ser escolhido, mas vem primeiro na tela.
+Esperado: Fabricante antes de Família, como já acontece nos filtros.
+
+E11 – Combustível escrito diferente no formulário e na grade (Baixa)
+Como simular: abrir a edição do Astra. O formulário mostra "Alcool/Gasolina" e a grade mostra "ÝLCOOL/GASOLINA".
+Esperado: o mesmo texto nos dois lugares, com acento.
+
+E12 – Cabeçalhos da grade sem acento (Baixa)
+Como simular: comparar o filtro "Família" com os cabeçalhos "Familia" e "Combustivel" da grade.
+Esperado: "Família" e "Combustível" em toda a tela.
+
+E13 – Filtro Tipo com visual diferente (Baixa)
+Como simular: comparar o campo Tipo com os outros campos de seleção do filtro. A seta e a borda são diferentes.
+Esperado: todos os campos com o mesmo padrão visual.
+
+E14 – Rolagem horizontal na página (Baixa)
+Como simular: abrir a tela em 1366x768 ou 1920x1080. Aparece uma barra de rolagem horizontal no rodapé, porque a grade passa da largura da tela.
+Esperado: a grade caber na largura da página.
+Melhorias sugeridas
+1. Validar Molicar, anos e campos numéricos também no servidor (ano de fim maior ou igual ao de início, valores positivos, Molicar único). Assim a base não fica com dados como os dos erros E02, E05 e E06.
+2. Colocar máscara no campo Molicar, o que evita erro de digitação e padroniza o código.
+3. Adicionar os botões "Pesquisar" e "Limpar filtros", para o usuário controlar a busca e voltar à lista completa com um clique.
+4. Mostrar mensagem de sucesso ou erro ao salvar, editar e excluir, para o usuário ter certeza de que a ação deu certo.
+5. Mostrar "Nenhum registro encontrado" quando o filtro não trouxer resultado, para não parecer que a tela travou.
+6. Trocar a exclusão definitiva por inativação, mantendo histórico. Isso permite recuperar um registro apagado por engano.
+7. Ter ordenação por coluna, paginação e total de registros, o que agiliza a consulta numa base grande como a Molicar.
+8. Escrever "Cilindradas" e "Automático" (ou o que "Aut." significar) em vez das abreviações, que hoje deixam dúvida.
+9. Mostrar as unidades nos valores (cc e cv), para a leitura ficar imediata.
+10. Exibir a coluna "Cadastro Manual" na grade, já que existe filtro para ela.
+11. Colocar dica (tooltip) nos ícones de editar e excluir e no campo Modelo quando o texto for cortado, o que melhora a clareza e a acessibilidade.
+12. Usar HTTPS no site, protegendo os dados e tirando o aviso "Não seguro" do navegador.
